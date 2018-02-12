@@ -42,9 +42,17 @@ function initClickEvents() {
 		else {
 			//$("#info-cont").css("left", -infoWidth);
 			$("#info-cont").css("left", navWidth);
+
+			if ($(window).width() <= mediaCheck) {
+				$("#overlay-back-sub").show();
+				$("#overlay-back-sub").css("opacity", "0.6");
+			}
 		}
 	});
 	
+
+
+	/*-- Accounts --*/
 	$(".account").unbind('click').click(function() {
 		$(".account").removeClass("account-active");
 		$(this).addClass("account-active");
@@ -56,6 +64,18 @@ function initClickEvents() {
 		$(".category").css("height", "25px");
 	});
 
+	$(".account-edit").unbind('click').click(function() {
+		var $account = $(this).closest($(".account"));
+		showForm("account-edit", $account);
+	});
+
+	$(".control-add-account").unbind('click').click(function() {
+		showForm("account-add");
+	});
+
+
+
+	/*-- Categories --*/
 	$(".category").unbind('click').click(function() {
 		$(".category").removeClass("category-active");
 		$(this).addClass("category-active");
@@ -68,27 +88,38 @@ function initClickEvents() {
 		$(".account-balance").css("right", "-27px");
 	});
 
+	$(".category-edit").unbind('click').click(function() {
+		var $category = $(this).closest($(".category"));
+		showForm("category-edit", $category);
+	});
+
+	$(".control-add-category").unbind('click').click(function() {
+		showForm("category-add");
+	});
 
 
 
-	/*-- FORMS --*/
-	$(".control-add-expense").unbind('click').click(function() {
-		var formWidth = $("#form-cont").outerWidth();
 
-		if (parseInt($("#form-cont").css("right")) < 0) {
-			$("#form-add-expense").show();
-			$("#form-cont").css("right", 0);
-			$("#overlay-back").show();
-			$("#overlay-back").css("opacity", "0.6");
-
-			$("#form-add-expense").find("input:first").focus(); //.select();
-
-			if ($(window).width() <= mediaCheck) {
-				closeInfo();
-			}
+	/*-- Expenses --*/
+	$(".expense").unbind('click').click(function() {
+		if (!$(this).find($(".exp-col-delete")).is(":hover")){
+			showForm("expense-edit", $(this));
 		}
 	});
 
+	$(".control-add-expense").unbind('click').click(function() {
+		showForm("expense-add");
+	});
+
+
+
+	/*-- Controls --*/
+	$(".control-transfer").unbind('click').click(function() {
+		showForm("transfer");
+	});
+
+
+	/*-- FORMS --*/
 	$(".form-button-cancel").unbind('click').click(function() {
 		closeForms();
 	});
@@ -106,13 +137,19 @@ function initClickEvents() {
 			$box.css("height", "0px");
 			$box.css("margin-top", "0px");
 			$(this).val("Create New Category");
-			$box.parents($(".form")).find($(".form-category")).focus();
+			$box.closest($(".form")).find($(".form-category")).focus();
 		}
 	});
 
 	$("#overlay-back").unbind('click').click(function() {
 		closeForms();
 	});
+
+	$("#overlay-back-sub").unbind('click').click(function() {
+		closeInfo();
+	});
+
+
 
 
 	$("html").unbind('click').click(function() {
@@ -178,6 +215,91 @@ function insertExpense() {
 
 /*----------------- MISC. FUNCTIONS -----------------*/
 
+function showForm(type, $link = false, ) {
+	var formWidth = $("#form-cont").outerWidth();
+	var $form = false;
+
+	if (parseInt($("#form-cont").css("right")) < 0) {
+		$(".form").hide()
+		$("#form-cont").css("right", 0);
+		$("#overlay-back").show();
+		$("#overlay-back").css("opacity", "0.6");
+
+		if ($(window).width() <= mediaCheck) {
+			closeInfo();
+		}
+
+		switch (type) {
+			case "expense-add":
+				$form = $("#form-expense");
+				$form.find("input:first").focus(); //.select();
+				$form.find($(".form-title")).html("Add Expense");
+				$form.find($(".form-date")).val(currentDate());
+				$form.find($(".form-description")).val("Misc");
+				$form.find($(".form-amount")).val(0);
+				$form.find($(".form-category")).val($form.find($(".form-category option:first")).val());
+				break;
+
+			case "expense-edit":
+				$form = $("#form-expense");
+				$form.find("input:first").focus(); //.select();
+				$form.find($(".form-title")).html("Edit Expense");
+				$form.find($(".form-date")).val($link.find($(".exp-col-date")).html());
+				$form.find($(".form-description")).val($link.find($(".exp-col-desc")).html());
+				$form.find($(".form-amount")).val($link.find($(".exp-col-amount")).html());
+				$form.find($(".form-category")).val($link.find($(".exp-col-cat")).attr("categoryid"));
+				break;
+
+			case "account-add":
+				$form = $("#form-account");
+				$form.find("input:first").focus(); //.select();
+				$form.find($(".form-title")).html("Add Account");
+				$form.find($(".form-name")).val("New Account");
+				$form.find($(".form-button-delete")).hide();
+				break;
+
+			case "account-edit":
+				$form = $("#form-account");
+				$form.find("input:first").focus(); //.select();
+				$form.find($(".form-title")).html("Edit Account");
+				$form.find($(".form-name")).val($link.find($(".account-name")).html());
+				$form.find($(".form-button-delete")).show();
+				break;
+
+			case "category-add":
+				$form = $("#form-category");
+				$form.find("input:first").focus(); //.select();
+				$form.find($(".form-title")).html("Add Category");
+				$form.find($(".form-name")).val("New Category");
+				$form.find($(".form-budget")).val("");
+				$form.find($(".form-cat-type")).val(0);
+				$form.find($(".form-button-delete")).hide();
+				break;
+
+			case "category-edit":
+				$form = $("#form-category");
+				$form.find("input:first").focus(); //.select();
+				$form.find($(".form-title")).html("Edit Category");
+				$form.find($(".form-name")).val($link.find($(".category-name")).html());
+				$form.find($(".form-budget")).val($link.find($(".category-budget-value")).html());
+				$form.find($(".form-cat-type")).val($link.attr("type"));
+				$form.find($(".form-button-delete")).show();
+				break;
+
+			case "transfer":
+				$form = $("#form-transfer");
+				$form.find("select:first").focus(); //.select();
+				$form.find($(".form-title")).html("Transfer Funds");
+				break;
+
+			default:
+				break;
+		}
+
+		if ($form) $form.show();
+	}
+}
+
 function closeForms() {
 	var duration = 0.5;
 
@@ -185,6 +307,13 @@ function closeForms() {
 	$("#overlay-back").css("opacity", "0");
 
 	setTimeout(function() {
+		$("#form-cont").find("input[type=text]").val("");
+		$("#form-cont").find("input[type=select]").val(1);
+		$("#form-cont").find($(".form-cat-type")).val(0);
+		$(".form-new-cat-box").css("height", "0px");
+		$(".form-new-cat-box").css("margin-top", "0px");
+		$(".form-button-new-cat").val("Create New Category");
+
 		$("#overlay-back").hide();
 		$(".form").hide();
 	}, duration * 1000);
@@ -192,9 +321,31 @@ function closeForms() {
 
 function closeInfo() {
 	var infoWidth = $("#info-cont").outerWidth();
+	var duration = 0.5;
+
 	$("#info-cont").css("left", -infoWidth);
+	$("#overlay-back-sub").css("opacity", "0");
+
+	setTimeout(function() {
+		$("#overlay-back-sub").hide();
+	}, duration * 1000);
 }
 
 
+function currentDate() {
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1;
+	var yyyy = today.getFullYear();
 
+	if(dd<10) {
+	    dd = '0'+dd
+	} 
+
+	if(mm<10) {
+	    mm = '0'+mm
+	} 
+
+	return mm + '/' + dd + '/' + yyyy;
+}
 

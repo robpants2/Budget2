@@ -53,6 +53,20 @@ table {
 	opacity: 0;
 }
 
+#overlay-back-sub {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 100vh;
+	width: 100vw;
+	z-index: 1400;
+	transition: opacity 0.5s;
+	transition-duration: 0.5s;
+	/*display: none;*/
+	background-color: black;
+	opacity: 0;
+}
+
 /*-- Navigation Bar -------------------------------------------------------------------*/
 #nav-cont {
 	position: fixed;
@@ -167,6 +181,24 @@ table {
 	box-sizing: border-box;
 }
 
+.info-item-add {
+	position: absolute;
+	right: 0px;
+	width: 40px;
+	height: 100%;
+	user-select: none;
+	cursor: pointer;
+	color: white;
+	text-align: center;
+	font-size: 25px;
+	line-height: 25px;
+	margin: 0px;
+}
+
+.info-item-add:hover {
+	background-color: gray;
+}
+
 .info-item-title-cont {
 	background-color: #333;
 	color: white;
@@ -175,6 +207,7 @@ table {
 	padding: 0px 5px;
 	height: 30px;
 	line-height: 30px;
+	position: relative;
 }
 
 .info-item-head {
@@ -198,6 +231,15 @@ table {
 	height: 50px;
 	width: 100%;
 	display: none;
+}
+
+.nav-control-small {
+	display: inline-block;
+	margin-right: 11.7%;
+}
+
+.nav-control-small:last-child {
+	margin-right: 0px;
 }
 
 
@@ -420,19 +462,18 @@ table {
 /*-- Expenses ------------------------------------------------------------------*/
 #expenses-cont {
 	width: calc(100% - 50px);
-	height: 100%;
+	height: 100vh;
 	margin-left: 50px;
 	padding: 15px;
 	box-sizing: border-box;
 }
 
-#expenses-table {
-	border: 1px solid black;
+#expenses-border {
 	width: 70%;
 	min-width: 700px;
 	max-width: 1500px;
 	margin: auto;
-	height: 400px;
+	height: 100%;
 	box-sizing: border-box;
 }
 
@@ -443,6 +484,7 @@ table {
 	vertical-align: top;
 	background-color: red;
 	display: none;
+	margin-right: 10px;
 }
 
 #expenses-heading {
@@ -465,6 +507,127 @@ table {
 	bottom: 5px;
 	right: 0px;
 }
+
+#expenses-table-head-cont {
+	background-color: gray;
+	box-sizing: border-box;
+	height: 30px;
+	width: 100%;
+	color: white;
+	border: 1px solid black;
+}
+
+#expenses-table-head {
+	width: calc(100% - 17px);
+	height: 100%;
+}
+
+.expense-table-heading {
+	display: inline-block;
+	box-sizing: border-box;
+	height: 100%;
+	font-size: 14px;
+	padding-left: 4px;
+	user-select: none;
+	cursor: pointer;
+	line-height: 30px;
+    margin-left: -4px;
+}
+
+.expense-table-heading:first-of-type {
+	margin-left: 0px;
+}
+
+.expense-table-heading:hover {
+	color: black;
+}
+
+.exp-col-delete {
+	width: 5%;
+}
+
+.exp-col-date {
+	width: 15%;
+}
+
+.exp-col-desc {
+	width: 35%;
+}
+
+.exp-col-cat {
+	width: 20%;
+}
+
+.exp-col-amount {
+	width: 10%;
+}
+
+.exp-col-bal {
+	width: 10%;
+}
+
+#expenses-table-body {
+	width: 100%;
+	height: calc(100% - 70px);
+	overflow-y: scroll;
+	background-color: white;
+	border: 1px solid black;
+	border-top: none;
+	box-sizing: border-box;
+}
+
+.exp-delete-checkbox-all {
+    vertical-align: middle;
+    margin: 3px;
+    height: 17px;
+    width: 16px;
+}
+
+.expense {
+	box-sizing: border-box;
+	border-bottom: 1px solid lightgray;
+	height: 25px;
+}
+
+.expense:hover {
+	background: lightgray;
+}
+
+.expense-body-item {
+	display: inline-block;
+	box-sizing: border-box;
+	height: 100%;
+	font-size: 12px;
+	padding-left: 4px;
+	cursor: pointer;
+	line-height: 25px;
+    margin-left: -4px;
+}
+
+.expense-body-item:first-of-type {
+	margin-left: 0px;
+}
+
+.exp-delete-checkbox {
+    vertical-align: middle;
+    margin: 3px;
+    height: 17px;
+    width: 16px;
+    position: relative;
+    top: -1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -497,12 +660,15 @@ table {
 		height: calc(70vh - 140px);
 	}
 
+
+
+	/*-- Expenses --------------------------------*/
 	#expenses-cont {
 		width: 100vw;
 		margin-left: 0px;
 	}
 
-	#expenses-table {
+	#expenses-border {
 		width: 100%;
 		min-width: 100px;
 	}
@@ -510,5 +676,30 @@ table {
 	#expenses-heading-nav-expander {
 		display: inline-block;
 	}
+
+	#expenses-table-head {
+		width: 100%;
+	}
+
+	.exp-col-delete {
+		width: 8%;
+	}
+
+	.exp-col-date {
+		width: 21%;
+	}
+
+	.exp-col-desc {
+		width: 45%;
+	}
+
+	.exp-col-amount {
+		width: 25%;
+	}
+
+	.exp-col-bal, .exp-col-cat {
+		display: none;
+	}
+
 }
 
