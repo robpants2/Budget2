@@ -1,0 +1,514 @@
+
+html {
+	font-family: "Segoe UI",Arial,sans-serif;
+	height: 100%;
+	background: linear-gradient(white, #d0dfe4);
+}
+
+body {
+	margin: 0px;
+}
+
+h1, h2, h3, h4 {
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+a, a:visited, a:hover, a:active {
+	text-decoration: none;
+	color: inherit;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+table {
+	border-collapse: collapse
+}
+
+.button {
+	height: 30px;
+	padding: 0px 15px;
+}
+
+.cal-button {
+	vertical-align: top;
+	height: 26px;
+}
+
+#overlay-back {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 100vh;
+	width: 100vw;
+	z-index: 1550;
+	transition: opacity 0.5s;
+	transition-duration: 0.5s;
+	/*display: none;*/
+	background-color: black;
+	opacity: 0;
+}
+
+/*-- Navigation Bar -------------------------------------------------------------------*/
+#nav-cont {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 50px;
+	height: 100vh;
+	background-color: gray;
+	z-index: 1500;
+	box-sizing: border-box;
+	padding: 5px;
+}
+
+#nav-control-cont {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 250px;
+	border-bottom: 1px solid #444;
+}
+
+.nav-control {
+	width: 40px;
+	height: 40px;
+	background-color: #444;
+	position: relative;
+	margin: 10px auto;
+	font-size: 8px;
+	color: white;
+	user-select: none;
+	cursor: pointer;
+}	
+
+#nav-expand-cont {
+	position: absolute;
+	top: 250px;
+	left: 0px;
+	width: 100%;
+	height: calc(100vh - 250px);
+	cursor: pointer;
+}
+
+#nav-expand-arrow {
+	width: 30px;
+	height: 30px;
+	background-color: #444;
+	position: relative;
+	margin: auto;
+	top: calc(50% - 15px);
+	color: white;
+	font-size: 8px;
+}
+
+
+
+
+
+
+
+
+/*-- Info Container -------------------------------------------------------------------*/
+#info-cont {
+	position: fixed;
+	top: 0px;
+	left: -300px;
+	width: 300px;
+	height: 100vh;
+	background-color: lightgray;
+	transition: left 0.5s;
+	z-index: 1450;
+	box-sizing: border-box;
+	padding: 15px;
+	box-shadow: 2px 0px 8px rgba(40,40,40,0.4);
+}
+
+#info-search-cont {
+	width: 100%;
+	height: 30px;
+	margin-bottom: 15px;
+}
+
+#info-search {
+	width: 80%;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 0px 5px;
+}
+
+#info-search-submit {
+	width: 20%;
+	height: 100%;
+	box-sizing: border-box;
+	margin-left: -5px;
+	padding: 0px;
+}
+
+#info-account-cont {
+	height: 30vh;
+	margin-bottom: 15px;
+	background-color: white;
+}
+
+#info-category-cont {
+	height: calc(70vh - 90px);
+	background-color: white;
+}
+
+.info-item {
+	width: 100%;
+	border: 1px solid black;
+	box-sizing: border-box;
+}
+
+.info-item-title-cont {
+	background-color: #333;
+	color: white;
+	font-size: 18px;
+	font-weight: bold;
+	padding: 0px 5px;
+	height: 30px;
+	line-height: 30px;
+}
+
+.info-item-head {
+	border-bottom: 1px solid black;
+	padding: 0px 10px 0px 5px;
+    height: 30px;
+    line-height: 30px;
+    background-color: gray;
+    color: white;
+    font-size: 14px;
+}
+
+.info-item-table {
+	overflow-x: hidden;
+	overflow-y: scroll;
+	height: calc(100% - 61px);
+	background-color: white;
+}
+
+#info-nav-control-cont {
+	height: 50px;
+	width: 100%;
+	display: none;
+}
+
+
+
+/*-- Form Containers ----------------------------------------------------------------*/
+#form-cont {
+	position: fixed;
+	top: 0px;
+	right: -300px;
+	width: 300px;
+	height: 100vh;
+	background-color: lightgray;
+	transition: right 0.5s;
+	z-index: 1600;
+	box-sizing: border-box;
+	padding: 15px;
+	box-shadow: -2px 0px 8px rgba(40,40,40,0.4);
+}
+
+.form {
+	background-color: inherit;
+}
+
+.form-title {
+	font-size: 20px;
+	font-weight: bold;
+	margin: -15px;
+	margin-bottom: 10px;
+	padding: 15px;
+	background-color: #333;
+	color: white;
+}
+
+.form-heading {
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 2px;
+}
+
+.form-input {
+	width: 100%;
+	padding: 3px 5px;
+	box-sizing: border-box;
+	font-size: 14px;
+	margin-bottom: 15px;
+}
+
+.form-date {
+	width: 80%;
+	margin-right: -5px;
+}
+
+.form-new-cat-cont {
+	padding: 2px 15px;
+	margin-bottom: 10px;
+}
+
+.form-new-cat-box {
+	overflow: hidden;
+	height: 0px;
+	transition: all 0.5s;
+	background-color: inherit;
+	position: relative;
+	margin-top: 0px;
+}
+
+.form-buttons {
+	position: absolute;
+	bottom: 15px;
+	width: calc(100% - 30px);
+	background-color: inherit;
+}
+
+.form-button-submit {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+}
+
+.form-button-cancel {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+}
+
+
+
+
+/*-- Accounts ---------------------------------------------------------------------*/
+.account {
+	padding: 0px 5px;
+	user-select: none;
+	cursor: pointer;
+	position: relative;
+	font-size: 14px;
+	height: 25px;
+	line-height: 25px;
+	background-color: inherit;
+}
+
+.account:hover {
+	background-color: lightgray;
+}
+
+.account-name {
+	display: inline-block;
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+
+.account-balance {
+	position: absolute;
+	right: -27px;
+	top: 0px;
+	transition: right 0.3s;
+	background-color: inherit;
+	padding-left: 10px;
+}
+
+.account-balance-value {
+	display: inline-block;
+}
+
+.account-edit {
+	padding: 0px 10px;
+	height: 100%;
+	display: inline-block;
+	font-weight: bold;
+}
+
+.account-edit:hover {
+	background-color: red;
+}
+
+.account-active {
+	background-color: lightblue !important;
+}
+
+
+
+
+
+
+
+/*-- Categories ------------------------------------------------------------------*/
+.category {
+	padding: 0px 5px;
+	user-select: none;
+	cursor: pointer;
+	position: relative;
+	font-size: 14px;
+	height: 25px;
+	line-height: 25px;
+	background-color: inherit;
+	overflow: hidden;
+	transition: height 0.3s;
+}
+
+.category:hover {
+	background-color: lightgray;
+}
+
+.category-name {
+	display: inline-block;
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+
+.category-budget {
+	position: absolute;
+	right: -27px;
+	top: 0px;
+	transition: right 0.3s;
+	background-color: inherit;
+	padding-left: 10px;
+}
+
+.category-budget-value {
+	display: inline-block;
+}
+
+.category-edit {
+	padding: 0px 10px;
+	height: 100%;
+	display: inline-block;
+	font-weight: bold;
+}
+
+.category-edit:hover {
+	background-color: red;
+}
+
+.category-active {
+	background-color: lightblue !important;
+}
+
+.category-info {
+    margin-top: -5px;
+    margin-left: 23px;
+    font-size: 11px;
+}
+
+.category-info-item {
+	line-height: 18px;
+}
+
+.category-info-item-month {
+	display: inline-block;
+}
+
+.category-info-item-value {
+	display: inline-block;
+	position: absolute;
+    right: 32px;
+}
+
+
+
+
+/*-- Expenses ------------------------------------------------------------------*/
+#expenses-cont {
+	width: calc(100% - 50px);
+	height: 100%;
+	margin-left: 50px;
+	padding: 15px;
+	box-sizing: border-box;
+}
+
+#expenses-table {
+	border: 1px solid black;
+	width: 70%;
+	min-width: 700px;
+	max-width: 1500px;
+	margin: auto;
+	height: 400px;
+	box-sizing: border-box;
+}
+
+#expenses-heading-nav-expander {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	vertical-align: top;
+	background-color: red;
+	display: none;
+}
+
+#expenses-heading {
+	position: relative;
+	height: 40px;
+}
+
+#expenses-heading-name {
+	display: inline-block;
+	font-size: 26px;
+	position: absolute;
+	bottom: 5px;
+}
+
+#expenses-heading-type {
+	display: inline-block;
+	font-size: 14px;
+	vertical-align: bottom;
+	position: absolute;
+	bottom: 5px;
+	right: 0px;
+}
+
+
+
+
+
+
+
+
+/*-- Media Queries ------------------------------------------------------------------*/
+@media screen and (max-width: 600px) {
+	#nav-cont {
+		display: none;
+	}
+
+	.nav-control {
+		display: inline-block;
+		margin: 0px;
+		vertical-align: top;
+	}
+
+	#info-cont {
+		/*left: 0px;*/
+	}
+
+	#info-nav-control-cont {
+		display: block;
+	}
+
+	#info-category-cont {
+		height: calc(70vh - 140px);
+	}
+
+	#expenses-cont {
+		width: 100vw;
+		margin-left: 0px;
+	}
+
+	#expenses-table {
+		width: 100%;
+		min-width: 100px;
+	}
+
+	#expenses-heading-nav-expander {
+		display: inline-block;
+	}
+}
+
