@@ -2,8 +2,8 @@
 
 /*-- GLOBAL VARIABLES ------------------------------------------------------------------------*/
 
-var mediaCheck = 600;
 var formErrors = false;
+var numKeyExclude = [13, 9];
 
 
 
@@ -17,7 +17,6 @@ $(document).ready(function() {
 	$("#overlay-back-sub").hide();
 	$(".form-new-cat-cont").find("input").prop("disabled", true);
 
-	//$("#nav-control-add-expense").trigger('click');
 });
 
 
@@ -33,19 +32,17 @@ function initClickEvents() {
 		var navWidth = $("#nav-cont").outerWidth();
 		var infoWidth = $("#info-cont").outerWidth();
 
-		if ($(window).width() <= mediaCheck) {
+		if (mobileCheck()) {
 			navWidth = 0;
 		}
 		
 		if ($("#info-cont").position().left > -infoWidth) {
-			//$("#info-cont").css("left", navWidth);
 			closeInfo();
 		}
 		else {
-			//$("#info-cont").css("left", -infoWidth);
 			$("#info-cont").css("left", navWidth);
 
-			if ($(window).width() <= mediaCheck) {
+			if (mobileCheck()) {
 				$("#overlay-back-sub").show();
 				$("#overlay-back-sub").css("opacity", "0.6");
 			}
@@ -145,10 +142,13 @@ function initClickEvents() {
 
 
 
+
 	/*-- Controls --*/
 	$(".control-transfer").unbind('click').click(function() {
 		showForm("transfer");
 	});
+
+
 
 
 	/*-- FORMS --*/
@@ -157,18 +157,15 @@ function initClickEvents() {
 	});
 
 	$(".form-button-submit").unbind('click').click(function() {
-		if (!checkFormErrors()) {
-			//console.log("Successful Submit");
-			submitForm();
-		}
+		submitForm();
 	});
 
 	$(".form-button-new-cat").unbind('click').click(function() {
 		var $box = $(this).parent().find($(".form-new-cat-box"));
 
 		if ($box.height() <= 0) {
-			$box.css("height","200px");
-			$box.css("margin-top","-42px");
+			$box.css("height","220px");
+			$box.css("margin-top","-47px");
 			$(this).val("Use Existing Category");
 			$box.find("input:first").select();
 			$box.find("input").prop("disabled", false);
@@ -184,6 +181,77 @@ function initClickEvents() {
 		}
 	});
 
+	$(".form input").change(function() {
+		checkFormErrors();
+	});
+
+	$(".form-input-reset").unbind('click').click(function() {
+		var $input = $(this).parent().find($(".form-input"));
+
+		if ($input.hasClass("form-number")) {
+			$input.val("0.00");
+			$input.attr("value", "");
+		}
+		else {
+			$input.val("");
+		}
+		
+		$input.focus();
+		checkFormErrors();
+	});
+
+	$(".form-close").unbind('click').click(function() {
+		closeForms();
+	});
+
+	$(".form-number").keydown(function(e) {
+		e.preventDefault();
+
+		var $input = $(this);
+		var char = String.fromCharCode(e.keyCode);
+		var value = $input.attr("value");
+		var valString;
+
+		if (e.keyCode == 8) { //Backspace
+			if (value.length > 0) {
+				value = value.substring(0, value.length - 1); 
+			}	
+		}
+		else if (!isNaN(char) && !numKeyExclude.includes(e.keyCode)) {
+			value += "" + char;
+		}
+
+		//Formatting
+		if (value.length == 0) {
+			valString = "0.00";
+		}
+		else if (value.length == 1) {
+			valString = "0.0" + value;
+		}
+		else if (value.length == 2) {
+			valString = "0." + value;
+		}
+		else {
+			valString = value.substr(0, value.length - 2) + "." + value.substr(value.length - 2);
+			var count = 1;
+
+			if (value.length > 5) {
+				for (i=value.length - 3; i>0; i--) {
+					if (count%3 == 0) {
+						valString = valString.substr(0, i) + ',' + valString.substr(i, valString.length);
+					}
+
+					count ++;
+				}
+			}
+		}
+
+		$input.val(valString);
+		$input.attr("value", value);
+	});
+
+
+
 	$("#overlay-back").unbind('click').click(function() {
 		closeForms();
 	});
@@ -192,30 +260,22 @@ function initClickEvents() {
 		closeInfo();
 	});
 
-
-
-
-	$("html").unbind('click').click(function() {
+	$("html").unbind('click').click(function(e) {
 		if (!$("#info-cont").is(":hover")) {
 			var infoWidth = $("#info-cont").outerWidth();
 
-			if ($(window).width() <= mediaCheck) {
+			if (mobileCheck()) {
 				if ($("#info-cont").position().left > -infoWidth) {
 					$("#info-cont").css("left", -infoWidth);
 				}
 			}
 		}
+
+		if(!$(e.target).is('.form-test')) {
+    		$(".form-test").removeClass("form-test-active");
+  		}
 	});
 
-
-	$(".form input").change(function() {
-		//if (formErrors) {
-			checkFormErrors();
-			//if ($(this).val().length > 0) {
-			//	$(this).parent().find($(".form-error")).css("height", "0px");
-			//}
-		//}
-	});
 }
 
 
@@ -279,7 +339,7 @@ function showForm(type, $link = false, ) {
 		$("#overlay-back").show();
 		$("#overlay-back").css("opacity", "0.6");
 
-		if ($(window).width() <= mediaCheck) {
+		if (mobileCheck()) {
 			closeInfo();
 		}
 
@@ -290,7 +350,7 @@ function showForm(type, $link = false, ) {
 				$form.find($(".form-title")).html("Add Expense");
 				$form.find($(".form-date")).val(currentDate());
 				$form.find($(".form-description")).val("Misc");
-				$form.find($(".form-amount")).val(0);
+				$form.find($(".form-amount")).val("0.00");
 				$form.find($(".form-category")).val($form.find($(".form-category option:first")).val());
 				break;
 
@@ -300,7 +360,8 @@ function showForm(type, $link = false, ) {
 				$form.find($(".form-title")).html("Edit Expense");
 				$form.find($(".form-date")).val($link.find($(".exp-col-date")).html());
 				$form.find($(".form-description")).val($link.find($(".exp-col-desc")).html());
-				$form.find($(".form-amount")).val($link.find($(".exp-col-amount")).html());
+				$form.find($(".form-amount")).val($link.find($(".exp-col-amount")).html().replace('$',''));
+				$form.find($(".form-amount")).attr("value", $link.find($(".exp-col-amount")).html().replace('.', '').replace('$', ''))
 				$form.find($(".form-category")).val($link.find($(".exp-col-cat")).attr("categoryid"));
 				break;
 
@@ -358,8 +419,10 @@ function showForm(type, $link = false, ) {
 }
 
 function submitForm() {
-	$form = $(".form-active");
-	console.log("Successful Form Submit");
+	if (checkFormErrors() == false) {
+		$form = $(".form-active");
+		console.log("Successful Form Submit");
+	}
 }
 
 function checkFormErrors() {
@@ -372,37 +435,43 @@ function checkFormErrors() {
 		if ($(this).prop("disabled") == false) {
 
 			if ($(this).hasClass("form-date")) {
-				if ($(this).val().length == 0) {
+				if ($(this).val().length == 0  /*|| checkDate($(this).val())*/ ) {
 					error.css("height","20px");
+					$(this).addClass("form-error-outline");
 					formErrors = true;
 				}
 				else {
 					error.css("height", "0px");
+					$(this).removeClass("form-error-outline");
 				}
 			}
 			else if ($(this).hasClass("form-text")) {
 				if ($(this).val().length == 0) {
 					error.css("height","20px");
+					$(this).addClass("form-error-outline");
 					formErrors = true;
 				}
 				else {
 					error.css("height", "0px");
+					$(this).removeClass("form-error-outline");
 				}
 			}
 			else if ($(this).hasClass("form-number")) {
 				if ( parseFloat($(this).val()) < 0 || $(this).val().length == 0 || isNaN($(this).val()) ) {
 					error.css("height","20px");
+					$(this).addClass("form-error-outline");
 					formErrors = true;
 				}
 				else {
 					error.css("height", "0px");
+					$(this).removeClass("form-error-outline");
 				}
 			}
 		}
 
 	});
 
-	console.log(formErrors);
+	if (formErrors) console.log("Form Error(s)");
 	return formErrors;
 }
 
@@ -416,6 +485,7 @@ function closeForms() {
 		$("#form-cont").find("input[type=text]").val("");
 		$("#form-cont").find("input[type=select]").val(1);
 		$("#form-cont").find($(".form-cat-type")).val(0);
+		$(".form-number").attr("value", "");
 		$(".form-new-cat-box").css("height", "0px");
 		$(".form-new-cat-box").css("margin-top", "0px");
 		$(".form-button-new-cat").val("Create New Category");
@@ -424,6 +494,7 @@ function closeForms() {
 		$(".form").hide();
 		$(".form").removeClass("form-active");
 		$(".form-error").css("height", "0px");
+		$(".form-input").removeClass("form-error-outline");
 	}, duration * 1000);
 }
 
@@ -457,3 +528,7 @@ function currentDate() {
 	return mm + '/' + dd + '/' + yyyy;
 }
 
+function mobileCheck() {
+	var size = 600;
+	return ($(window).width() <= size);
+}

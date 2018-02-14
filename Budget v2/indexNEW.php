@@ -187,67 +187,69 @@
 				</div>
 				<div id="expenses-table-body">
 
-					<div class="expense">
+					<div class="expense" expenseid="1">
 						<div class="expense-body-item exp-col-delete">
 							<input type="checkbox" class="exp-delete-checkbox">
 						</div>
 						<div class="expense-body-item exp-col-date">12/20/2017</div>
 						<div class="expense-body-item exp-col-desc">Description</div>
 						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
-						<div class="expense-body-item exp-col-amount">Amount</div>
-						<div class="expense-body-item exp-col-bal">Balance</div>
+						<div class="expense-body-item exp-col-amount">$50.40</div>
+						<div class="expense-body-item exp-col-bal">$50.40</div>
 					</div>
 
-					<div class="expense">
+					<div class="expense" expenseid="1">
 						<div class="expense-body-item exp-col-delete">
 							<input type="checkbox" class="exp-delete-checkbox">
 						</div>
 						<div class="expense-body-item exp-col-date">12/20/2017</div>
 						<div class="expense-body-item exp-col-desc">Description</div>
 						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
-						<div class="expense-body-item exp-col-amount">Amount</div>
-						<div class="expense-body-item exp-col-bal">Balance</div>
+						<div class="expense-body-item exp-col-amount">50.40</div>
+						<div class="expense-body-item exp-col-bal">50.40</div>
 					</div>
-					<div class="expense">
+					<div class="expense" expenseid="1">
 						<div class="expense-body-item exp-col-delete">
 							<input type="checkbox" class="exp-delete-checkbox">
 						</div>
 						<div class="expense-body-item exp-col-date">12/20/2017</div>
 						<div class="expense-body-item exp-col-desc">Description</div>
 						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
-						<div class="expense-body-item exp-col-amount">Amount</div>
-						<div class="expense-body-item exp-col-bal">Balance</div>
+						<div class="expense-body-item exp-col-amount">50.40</div>
+						<div class="expense-body-item exp-col-bal">50.40</div>
 					</div>
-					<div class="expense">
+					<div class="expense" expenseid="1">
 						<div class="expense-body-item exp-col-delete">
 							<input type="checkbox" class="exp-delete-checkbox">
 						</div>
 						<div class="expense-body-item exp-col-date">12/20/2017</div>
 						<div class="expense-body-item exp-col-desc">Description</div>
 						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
-						<div class="expense-body-item exp-col-amount">Amount</div>
-						<div class="expense-body-item exp-col-bal">Balance</div>
+						<div class="expense-body-item exp-col-amount">50.40</div>
+						<div class="expense-body-item exp-col-bal">50.40</div>
 					</div>
-					<div class="expense">
+					<div class="expense" expenseid="1">
 						<div class="expense-body-item exp-col-delete">
 							<input type="checkbox" class="exp-delete-checkbox">
 						</div>
 						<div class="expense-body-item exp-col-date">12/20/2017</div>
 						<div class="expense-body-item exp-col-desc">Description</div>
 						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
-						<div class="expense-body-item exp-col-amount">Amount</div>
-						<div class="expense-body-item exp-col-bal">Balance</div>
+						<div class="expense-body-item exp-col-amount">50.40</div>
+						<div class="expense-body-item exp-col-bal">50.40</div>
 					</div>
-					<div class="expense">
+					<div class="expense" expenseid="1">
 						<div class="expense-body-item exp-col-delete">
 							<input type="checkbox" class="exp-delete-checkbox">
 						</div>
 						<div class="expense-body-item exp-col-date">12/20/2017</div>
 						<div class="expense-body-item exp-col-desc">Description</div>
 						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
-						<div class="expense-body-item exp-col-amount">Amount</div>
-						<div class="expense-body-item exp-col-bal">Balance</div>
+						<div class="expense-body-item exp-col-amount">50.40</div>
+						<div class="expense-body-item exp-col-bal">50.40</div>
 					</div>
+
+
 
 
 				</div>
@@ -257,31 +259,27 @@
 
 		<!-- Forms -->
 		<div id="form-cont">
-			<!--
-			<div id="form-alert-cont">
-				<div>Please correct the following errors before proceeding:</div>
-				<div id="form-alert-errors-cont">
-
-				</div>
-			</div>
-			-->
+			<div class="form-close">x</div>
 
 			<div id="form-expense" class="form">
 				<div class="form-title">Add Item</div>
 				<div class="form-item">
 					<div class="form-heading">Date</div>
 					<input class="form-input form-date" type="text" value="12/31/2017">
-					<input type="button" class="button cal-button" value="Cal">
+					<div class="form-input-reset form-input-reset-cal">x</div>
+					<input type="button" class="button cal-button" value="Cal" tabindex="-1">
 					<div class="form-error form-error-date">Please enter a valid date</div>
 				</div>
 				<div class="form-item">
 					<div class="form-heading">Description</div>
 					<input class="form-input form-description form-text" type="text" value="Description">
+					<div class="form-input-reset">x</div>
 					<div class="form-error form-error-date">Please enter a valid description</div>
 				</div>
 				<div class="form-item">
 					<div class="form-heading">Amount</div>
-					<input class="form-input form-amount form-number" type="text" value="125.50">
+					<input class="form-input form-amount form-number" type="text" value="">
+					<div class="form-input-reset">x</div>
 					<div class="form-error form-error-date">Please enter a valid amount</div>
 				</div>
 				<div class="form-item">
@@ -294,20 +292,30 @@
 				</div>
 				<div class="form-new-cat-box">
 					<div class="form-new-cat-cont">
-						<div class="form-heading">Name</div>
-						<input class="form-input form-text" type="text" value="">
-						<div class="form-heading">Budget (optional)</div>
-						<input class="form-input form-number" type="text" value="">
-						<div class="form-heading">Category Type</div>
-						<select class="form-input form-cat-type form-select">
-							<option value="0">Spending</option>
-							<option value="1">Deposit</option>
-						</select>
+						<div class="form-item">
+							<div class="form-heading">Name</div>
+							<input class="form-input form-text" type="text" value="">
+							<div class="form-input-reset">x</div>
+							<div class="form-error form-error-date">Please enter a valid name</div>
+						</div>
+						<div class="form-item">
+							<div class="form-heading">Budget (optional)</div>
+							<input class="form-input form-number" type="text" value="">
+							<div class="form-input-reset">x</div>
+							<div class="form-error form-error-date">Please enter a valid amount</div>
+						</div>
+						<div class="form-item">
+							<div class="form-heading">Category Type</div>
+							<select class="form-input form-cat-type form-select">
+								<option value="0">Spending</option>
+								<option value="1">Deposit</option>
+							</select>
+						</div>
 					</div>
 				</div>
-				<input class="form-button-new-cat form-input" type="button" value="Create New Category">
+				<input class="form-button-new-cat button" type="button" value="Create New Category">
 				<div class="form-buttons">
-					<input class="form-button-cancel button" type="button" value="Cancel">
+					<input class="form-button-cancel button" type="button" value="Cancel" tabindex="-1">
 					<input class="form-button-submit button" type="button" value="Submit">
 				</div>
 			</div>
