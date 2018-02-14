@@ -257,30 +257,49 @@
 
 		<!-- Forms -->
 		<div id="form-cont">
+			<!--
+			<div id="form-alert-cont">
+				<div>Please correct the following errors before proceeding:</div>
+				<div id="form-alert-errors-cont">
+
+				</div>
+			</div>
+			-->
 
 			<div id="form-expense" class="form">
 				<div class="form-title">Add Item</div>
-				<div class="form-heading">Date</div>
-				<input class="form-input form-date" type="text" value="12/31/2017">
-				<input type="button" class="button cal-button" value="Cal">
-				<div class="form-heading">Description</div>
-				<input class="form-input form-description" type="text" value="Description">
-				<div class="form-heading">Amount</div>
-				<input class="form-input form-amount" type="text" value="125.50">
-				<div class="form-heading">Category</div>
-				<select class="form-input form-category">
-					<option value="1">Misc</option>
-					<option value="2">Groceries</option>
-					<option value="3">Rent</option>
-				</select>
+				<div class="form-item">
+					<div class="form-heading">Date</div>
+					<input class="form-input form-date" type="text" value="12/31/2017">
+					<input type="button" class="button cal-button" value="Cal">
+					<div class="form-error form-error-date">Please enter a valid date</div>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Description</div>
+					<input class="form-input form-description form-text" type="text" value="Description">
+					<div class="form-error form-error-date">Please enter a valid description</div>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Amount</div>
+					<input class="form-input form-amount form-number" type="text" value="125.50">
+					<div class="form-error form-error-date">Please enter a valid amount</div>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Category</div>
+					<select class="form-input form-category form-select">
+						<option value="1">Misc</option>
+						<option value="2">Groceries</option>
+						<option value="3">Rent</option>
+					</select>
+				</div>
 				<div class="form-new-cat-box">
 					<div class="form-new-cat-cont">
 						<div class="form-heading">Name</div>
-						<input class="form-input" type="text" value="">
+						<input class="form-input form-text" type="text" value="">
 						<div class="form-heading">Budget (optional)</div>
-						<input class="form-input" type="text" value="">
+						<input class="form-input form-number" type="text" value="">
 						<div class="form-heading">Category Type</div>
-						<select class="form-input form-cat-type">
+						<select class="form-input form-cat-type form-select">
 							<option value="0">Spending</option>
 							<option value="1">Deposit</option>
 						</select>
@@ -293,6 +312,7 @@
 				</div>
 			</div>
 
+
 			<div id="form-account" class="form">
 				<div class="form-title">Add Item</div>
 				<div class="form-heading">Name</div>
@@ -303,6 +323,7 @@
 					<input class="form-button-submit button" type="button" value="Submit">
 				</div>
 			</div>
+
 
 			<div id="form-category" class="form">
 				<div class="form-title">Add Item</div>

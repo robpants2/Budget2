@@ -3,7 +3,7 @@
 /*-- GLOBAL VARIABLES ------------------------------------------------------------------------*/
 
 var mediaCheck = 600;
-
+var formErrors = false;
 
 
 
@@ -15,6 +15,7 @@ $(document).ready(function() {
 	initClickEvents();
 	$("#overlay-back").hide();
 	$("#overlay-back-sub").hide();
+	$(".form-new-cat-cont").find("input").prop("disabled", true);
 
 	//$("#nav-control-add-expense").trigger('click');
 });
@@ -155,6 +156,13 @@ function initClickEvents() {
 		closeForms();
 	});
 
+	$(".form-button-submit").unbind('click').click(function() {
+		if (!checkFormErrors()) {
+			//console.log("Successful Submit");
+			submitForm();
+		}
+	});
+
 	$(".form-button-new-cat").unbind('click').click(function() {
 		var $box = $(this).parent().find($(".form-new-cat-box"));
 
@@ -163,12 +171,16 @@ function initClickEvents() {
 			$box.css("margin-top","-42px");
 			$(this).val("Use Existing Category");
 			$box.find("input:first").select();
+			$box.find("input").prop("disabled", false);
+			$box.closest($(".form")).find($(".form-category")).prop("disabled", true);
 		}
 		else {
 			$box.css("height", "0px");
 			$box.css("margin-top", "0px");
 			$(this).val("Create New Category");
 			$box.closest($(".form")).find($(".form-category")).focus();
+			$box.find("input").prop("disabled", true);
+			$box.closest($(".form")).find($(".form-category")).prop("disabled", false);
 		}
 	});
 
@@ -193,6 +205,16 @@ function initClickEvents() {
 				}
 			}
 		}
+	});
+
+
+	$(".form input").change(function() {
+		//if (formErrors) {
+			checkFormErrors();
+			//if ($(this).val().length > 0) {
+			//	$(this).parent().find($(".form-error")).css("height", "0px");
+			//}
+		//}
 	});
 }
 
@@ -220,16 +242,16 @@ function ajax(file, type, data) {
 	*/
 }
 
-function insertExpense() {
+function insertExpense(data) {
 	var file = "insert_expense.php";
 	var type = "POST";
-	var data = {date: "2/8/18", description: "Description", category: 1, amount: 150.40};
+	data = {date: "2/8/18", description: "Description", category: 1, amount: 150.40};
 	var errors = '';
 	
 	//check for errors
 	
 	if (errors) {
-	
+		
 	}
 	else {
 		var submit = ajax(file, type, data);
@@ -252,6 +274,7 @@ function showForm(type, $link = false, ) {
 
 	if (parseInt($("#form-cont").css("right")) < 0) {
 		$(".form").hide()
+		$(".form").removeClass("form-active");
 		$("#form-cont").css("right", 0);
 		$("#overlay-back").show();
 		$("#overlay-back").css("opacity", "0.6");
@@ -327,8 +350,60 @@ function showForm(type, $link = false, ) {
 				break;
 		}
 
-		if ($form) $form.show();
+		if ($form) {
+			$form.show();
+			$form.addClass("form-active");
+		} 
 	}
+}
+
+function submitForm() {
+	$form = $(".form-active");
+	console.log("Successful Form Submit");
+}
+
+function checkFormErrors() {
+	var $form = $(".form-active");
+	formErrors = false;
+
+	$form.find($(".form-input")).each(function() {
+		var error = $(this).parent().find($(".form-error"));
+
+		if ($(this).prop("disabled") == false) {
+
+			if ($(this).hasClass("form-date")) {
+				if ($(this).val().length == 0) {
+					error.css("height","20px");
+					formErrors = true;
+				}
+				else {
+					error.css("height", "0px");
+				}
+			}
+			else if ($(this).hasClass("form-text")) {
+				if ($(this).val().length == 0) {
+					error.css("height","20px");
+					formErrors = true;
+				}
+				else {
+					error.css("height", "0px");
+				}
+			}
+			else if ($(this).hasClass("form-number")) {
+				if ( parseFloat($(this).val()) < 0 || $(this).val().length == 0 || isNaN($(this).val()) ) {
+					error.css("height","20px");
+					formErrors = true;
+				}
+				else {
+					error.css("height", "0px");
+				}
+			}
+		}
+
+	});
+
+	console.log(formErrors);
+	return formErrors;
 }
 
 function closeForms() {
@@ -347,6 +422,8 @@ function closeForms() {
 
 		$("#overlay-back").hide();
 		$(".form").hide();
+		$(".form").removeClass("form-active");
+		$(".form-error").css("height", "0px");
 	}, duration * 1000);
 }
 
