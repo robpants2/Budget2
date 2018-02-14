@@ -518,7 +518,7 @@ table {
 }
 
 #expenses-table-head {
-	width: calc(100% - 17px);
+	width: calc(100% - 14px);
 	height: 100%;
 }
 
@@ -530,7 +530,7 @@ table {
 	padding-left: 4px;
 	user-select: none;
 	cursor: pointer;
-	line-height: 30px;
+	line-height: 27px;
     margin-left: -4px;
 }
 
@@ -559,11 +559,12 @@ table {
 }
 
 .exp-col-amount {
-	width: 10%;
+	width: 12%;
 }
 
 .exp-col-bal {
-	width: 10%;
+	width: 12%;
+	text-align: right;
 }
 
 #expenses-table-body {
@@ -581,6 +582,9 @@ table {
     margin: 3px;
     height: 17px;
     width: 16px;
+    position: relative;
+    top: -1px;
+    cursor: pointer;
 }
 
 .expense {
@@ -614,7 +618,12 @@ table {
     height: 17px;
     width: 16px;
     position: relative;
-    top: -1px;
+    top: -2px;
+    cursor: pointer;
+}
+
+.expense-selected {
+	background-color: lightblue !important;
 }
 
 

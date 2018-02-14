@@ -14,6 +14,7 @@ $(document).ready(function() {
 
 	initClickEvents();
 	$("#overlay-back").hide();
+	$("#overlay-back-sub").hide();
 
 	//$("#nav-control-add-expense").trigger('click');
 });
@@ -109,6 +110,36 @@ function initClickEvents() {
 
 	$(".control-add-expense").unbind('click').click(function() {
 		showForm("expense-add");
+	});
+
+	$(".exp-delete-checkbox-all").unbind('click').click(function() {
+		if ($(this).is(":checked")) {
+			$(".expense").each(function() {
+				$(this).addClass("expense-selected");
+				$(this).find($(".exp-delete-checkbox")).prop("checked", true);
+			});
+		}
+		else {
+			$(".expense").removeClass("expense-selected");
+			$(".exp-delete-checkbox").prop("checked", false);
+		}
+	});
+
+	$(".exp-delete-checkbox").unbind('click').click(function() {
+		var $expense = $(this).closest($(".expense"));
+
+		if ($(this).prop("checked")) {
+			$expense.addClass("expense-selected");
+		}
+		else {
+			$expense.removeClass("expense-selected");
+		}
+	});
+
+	$(".exp-col-delete").unbind('click').click(function() {
+		$checkbox = $(this).find("input[type=checkbox]");
+
+		if (!$checkbox.is(":hover")) $checkbox.trigger('click');
 	});
 
 

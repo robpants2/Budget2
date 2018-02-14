@@ -187,7 +187,6 @@
 				</div>
 				<div id="expenses-table-body">
 
-
 					<div class="expense">
 						<div class="expense-body-item exp-col-delete">
 							<input type="checkbox" class="exp-delete-checkbox">
@@ -199,7 +198,56 @@
 						<div class="expense-body-item exp-col-bal">Balance</div>
 					</div>
 
-
+					<div class="expense">
+						<div class="expense-body-item exp-col-delete">
+							<input type="checkbox" class="exp-delete-checkbox">
+						</div>
+						<div class="expense-body-item exp-col-date">12/20/2017</div>
+						<div class="expense-body-item exp-col-desc">Description</div>
+						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
+						<div class="expense-body-item exp-col-amount">Amount</div>
+						<div class="expense-body-item exp-col-bal">Balance</div>
+					</div>
+					<div class="expense">
+						<div class="expense-body-item exp-col-delete">
+							<input type="checkbox" class="exp-delete-checkbox">
+						</div>
+						<div class="expense-body-item exp-col-date">12/20/2017</div>
+						<div class="expense-body-item exp-col-desc">Description</div>
+						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
+						<div class="expense-body-item exp-col-amount">Amount</div>
+						<div class="expense-body-item exp-col-bal">Balance</div>
+					</div>
+					<div class="expense">
+						<div class="expense-body-item exp-col-delete">
+							<input type="checkbox" class="exp-delete-checkbox">
+						</div>
+						<div class="expense-body-item exp-col-date">12/20/2017</div>
+						<div class="expense-body-item exp-col-desc">Description</div>
+						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
+						<div class="expense-body-item exp-col-amount">Amount</div>
+						<div class="expense-body-item exp-col-bal">Balance</div>
+					</div>
+					<div class="expense">
+						<div class="expense-body-item exp-col-delete">
+							<input type="checkbox" class="exp-delete-checkbox">
+						</div>
+						<div class="expense-body-item exp-col-date">12/20/2017</div>
+						<div class="expense-body-item exp-col-desc">Description</div>
+						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
+						<div class="expense-body-item exp-col-amount">Amount</div>
+						<div class="expense-body-item exp-col-bal">Balance</div>
+					</div>
+					<div class="expense">
+						<div class="expense-body-item exp-col-delete">
+							<input type="checkbox" class="exp-delete-checkbox">
+						</div>
+						<div class="expense-body-item exp-col-date">12/20/2017</div>
+						<div class="expense-body-item exp-col-desc">Description</div>
+						<div class="expense-body-item exp-col-cat" categoryid="1">Category</div>
+						<div class="expense-body-item exp-col-amount">Amount</div>
+						<div class="expense-body-item exp-col-bal">Balance</div>
+					</div>
 
 
 				</div>
