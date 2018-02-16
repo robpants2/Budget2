@@ -7,13 +7,13 @@
   		
   		<!-- CSS -->
 		<link rel="stylesheet" href="./css/budgetNEW.css" type="text/css">
-		<!-- <link rel="stylesheet" href="./css/calendar.css" type="text/css"> -->
+		<link rel="stylesheet" href="./css/calendar.css" type="text/css">
 
 		<!-- JavaScript -->
 		<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script type="text/javascript" src="./js/budgetNEW.js"></script>
-		<!-- <script type="text/javascript" src="./js/calendar.js"></script> -->
+		<script type="text/javascript" src="./js/calendar.js"></script>
 		
 		<title>Budget</title>
 	</head>
@@ -45,6 +45,7 @@
 				<div class="nav-control-small">
 					<div id="info-control-recurring" class="nav-control">Recur</div>
 				</div>
+				<div class="info-close">x</div>
 			</div>
 			<div id="info-search-cont">
 				<input id="info-search" type="text" name="info-search" placeholder="Search Expenses">
@@ -172,6 +173,7 @@
 					<div id="expenses-heading-nav-expander" class="nav-expander"></div>
 					<div id="expenses-heading-name">Checking</div>
 					<div id="expenses-heading-type">Account</div>
+					<div id="expenses-heading-add-expense" class="control-add-expense nav-control">Add</div>
 				</div>
 				<div id="expenses-table-head-cont">
 					<div id="expenses-table-head">
@@ -261,30 +263,30 @@
 		<div id="form-cont">
 			<div class="form-close">x</div>
 
-			<div id="form-expense" class="form">
+			<form id="form-expense" class="form">
 				<div class="form-title">Add Item</div>
 				<div class="form-item">
 					<div class="form-heading">Date</div>
-					<input class="form-input form-date" type="text" value="12/31/2017">
+					<input name="date" class="form-input form-date" type="text" value="12/31/2017">
+					<input type="button" class="button cal-button form-cal" value="Cal" tabindex="-1">
 					<div class="form-input-reset form-input-reset-cal">x</div>
-					<input type="button" class="button cal-button" value="Cal" tabindex="-1">
 					<div class="form-error form-error-date">Please enter a valid date</div>
 				</div>
 				<div class="form-item">
 					<div class="form-heading">Description</div>
-					<input class="form-input form-description form-text" type="text" value="Description">
+					<input name="description" class="form-input form-description form-text" type="text" value="Description">
 					<div class="form-input-reset">x</div>
 					<div class="form-error form-error-date">Please enter a valid description</div>
 				</div>
 				<div class="form-item">
 					<div class="form-heading">Amount</div>
-					<input class="form-input form-amount form-number" type="text" value="">
+					<input name="amount" class="form-input form-amount form-number" type="text" value="">
 					<div class="form-input-reset">x</div>
 					<div class="form-error form-error-date">Please enter a valid amount</div>
 				</div>
 				<div class="form-item">
 					<div class="form-heading">Category</div>
-					<select class="form-input form-category form-select">
+					<select name="category" class="form-input form-category form-select">
 						<option value="1">Misc</option>
 						<option value="2">Groceries</option>
 						<option value="3">Rent</option>
@@ -294,19 +296,19 @@
 					<div class="form-new-cat-cont">
 						<div class="form-item">
 							<div class="form-heading">Name</div>
-							<input class="form-input form-text" type="text" value="">
+							<input name="newCategoryName" class="form-input form-text" type="text" value="">
 							<div class="form-input-reset">x</div>
 							<div class="form-error form-error-date">Please enter a valid name</div>
 						</div>
 						<div class="form-item">
 							<div class="form-heading">Budget (optional)</div>
-							<input class="form-input form-number" type="text" value="">
+							<input name="newCategoryBudget" class="form-input form-number" type="text" value="">
 							<div class="form-input-reset">x</div>
 							<div class="form-error form-error-date">Please enter a valid amount</div>
 						</div>
 						<div class="form-item">
 							<div class="form-heading">Category Type</div>
-							<select class="form-input form-cat-type form-select">
+							<select name="newCategoryType" class="form-input form-cat-type form-select">
 								<option value="0">Spending</option>
 								<option value="1">Deposit</option>
 							</select>
@@ -318,13 +320,18 @@
 					<input class="form-button-cancel button" type="button" value="Cancel" tabindex="-1">
 					<input class="form-button-submit button" type="button" value="Submit">
 				</div>
-			</div>
+				<input type="hidden" name="userid" class="form-userid" value="">
+			</form>
 
 
 			<div id="form-account" class="form">
 				<div class="form-title">Add Item</div>
-				<div class="form-heading">Name</div>
-				<input class="form-input form-name" type="text" value="New Account">
+				<div class="form-item">
+					<div class="form-heading">Name</div>
+					<input class="form-input form-name form-text" type="text" value="New Account">
+					<div class="form-input-reset">x</div>
+					<div class="form-error form-error-date">Please enter a valid name</div>
+				</div>
 				<input class="form-button-delete form-input" type="button" value="Delete Account">
 				<div class="form-buttons">
 					<input class="form-button-cancel button" type="button" value="Cancel">
@@ -334,16 +341,26 @@
 
 
 			<div id="form-category" class="form">
-				<div class="form-title">Add Item</div>
-				<div class="form-heading">Name</div>
-				<input class="form-input form-name" type="text" value="New Category">
-				<div class="form-heading">Budget (optional)</div>
-				<input class="form-input form-budget" type="text" value="">
-				<div class="form-heading">Category Type</div>
-				<select class="form-input form-cat-type">
-					<option value="0">Spending</option>
-					<option value="1">Deposit</option>
-				</select>
+				<div class="form-title">Add Category</div>
+				<div class="form-item">
+					<div class="form-heading">Name</div>
+					<input class="form-input form-name form-text" type="text" value="New Category">
+					<div class="form-input-reset">x</div>
+					<div class="form-error form-error-date">Please enter a valid name</div>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Budget (optional)</div>
+					<input class="form-input form-budget form-number" type="text" value="">
+					<div class="form-input-reset">x</div>
+					<div class="form-error form-error-date">Please enter a valid name</div>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Category Type</div>
+					<select class="form-input form-cat-type">
+						<option value="0">Spending</option>
+						<option value="1">Deposit</option>
+					</select>
+				</div>
 				<input class="form-button-delete form-input" type="button" value="Delete Category">
 				<div class="form-buttons">
 					<input class="form-button-cancel button" type="button" value="Cancel">
@@ -353,18 +370,26 @@
 
 			<div id="form-transfer" class="form">
 				<div class="form-title">Transfer Funds</div>
-				<div class="form-heading">Transfer From</div>
-				<select class="form-input form-account-select">
-					<option value="0">Account 1</option>
-					<option value="1">Account 2</option>
-				</select>
-				<div class="form-heading">Transfer To</div>
-				<select class="form-input form-account-select">
-					<option value="0">Account 1</option>
-					<option value="1">Account 2</option>
-				</select>
-				<div class="form-heading">Amount</div>
-				<input class="form-input form-amount" type="text" value="">
+				<div class="form-item">
+					<div class="form-heading">Transfer From</div>
+						<select class="form-input form-account-select">
+						<option value="0">Account 1</option>
+						<option value="1">Account 2</option>
+					</select>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Transfer To</div>
+					<select class="form-input form-account-select">
+						<option value="0">Account 1</option>
+						<option value="1">Account 2</option>
+					</select>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Amount</div>
+					<input class="form-input form-amount form-number" type="text" value="">
+					<div class="form-input-reset">x</div>
+					<div class="form-error form-error-date">Please enter a valid amount</div>
+				</div>
 				<div class="form-buttons">
 					<input class="form-button-cancel button" type="button" value="Cancel">
 					<input class="form-button-submit button" type="button" value="Submit">

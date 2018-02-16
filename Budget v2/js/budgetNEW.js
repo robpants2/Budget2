@@ -3,7 +3,11 @@
 /*-- GLOBAL VARIABLES ------------------------------------------------------------------------*/
 
 var formErrors = false;
-var numKeyExclude = [13, 9];
+var numKeyCodes = {96:"0", 97:"1", 98:"2", 99:"3", 100:"4", 101:"5", 102:"6", 103:"7", 104:"8", 105:"9"};
+var numKeyExclude = [13, 9, 32];
+var userid = "1234567890";
+var formCalHover = false;
+var calHover = false;
 
 
 
@@ -32,9 +36,7 @@ function initClickEvents() {
 		var navWidth = $("#nav-cont").outerWidth();
 		var infoWidth = $("#info-cont").outerWidth();
 
-		if (mobileCheck()) {
-			navWidth = 0;
-		}
+		if (mobileCheck()) { navWidth = 0; }
 		
 		if ($("#info-cont").position().left > -infoWidth) {
 			closeInfo();
@@ -48,7 +50,30 @@ function initClickEvents() {
 			}
 		}
 	});
+
+	$(".info-close").unbind('click').click(function() {
+		closeInfo();
+	});	
 	
+
+
+	/*-- Controls --*/
+	$(".control-add-account").unbind('click').click(function() {
+		showForm("account-add");
+	});
+
+	$(".control-add-category").unbind('click').click(function() {
+		showForm("category-add");
+	});
+
+	$(".control-add-expense").unbind('click').click(function() {
+		showForm("expense-add");
+	});
+
+	$(".control-transfer").unbind('click').click(function() {
+		showForm("transfer");
+	});
+
 
 
 	/*-- Accounts --*/
@@ -68,11 +93,7 @@ function initClickEvents() {
 		showForm("account-edit", $account);
 	});
 
-	$(".control-add-account").unbind('click').click(function() {
-		showForm("account-add");
-	});
-
-
+	
 
 	/*-- Categories --*/
 	$(".category").unbind('click').click(function() {
@@ -92,10 +113,6 @@ function initClickEvents() {
 		showForm("category-edit", $category);
 	});
 
-	$(".control-add-category").unbind('click').click(function() {
-		showForm("category-add");
-	});
-
 
 
 
@@ -104,10 +121,6 @@ function initClickEvents() {
 		if (!$(this).find($(".exp-col-delete")).is(":hover")){
 			showForm("expense-edit", $(this));
 		}
-	});
-
-	$(".control-add-expense").unbind('click').click(function() {
-		showForm("expense-add");
 	});
 
 	$(".exp-delete-checkbox-all").unbind('click').click(function() {
@@ -138,14 +151,6 @@ function initClickEvents() {
 		$checkbox = $(this).find("input[type=checkbox]");
 
 		if (!$checkbox.is(":hover")) $checkbox.trigger('click');
-	});
-
-
-
-
-	/*-- Controls --*/
-	$(".control-transfer").unbind('click').click(function() {
-		showForm("transfer");
 	});
 
 
@@ -206,11 +211,14 @@ function initClickEvents() {
 
 	$(".form-number").keydown(function(e) {
 		e.preventDefault();
-
 		var $input = $(this);
 		var char = String.fromCharCode(e.keyCode);
 		var value = $input.attr("value");
 		var valString;
+
+		if (e.keyCode >= 96 && e.keyCode <= 105) { //Numpad
+			char = numKeyCodes[e.keyCode];
+		}
 
 		if (e.keyCode == 8) { //Backspace
 			if (value.length > 0) {
@@ -250,6 +258,17 @@ function initClickEvents() {
 		$input.attr("value", value);
 	});
 
+	$(".form-cal").unbind('click').click(function() {
+		if ($("#cal-cont").length == 0) {
+			showCal($(this).prev());
+		}
+		else {
+			calCancel();
+		}
+	});
+	
+	$(".form-cal").hover(function() { formCalHover = true; }, function() { formCalHover = false; });
+	$("#cal-cont").hover(function() { calHover = true; }, function() { calHover = false; });
 
 
 	$("#overlay-back").unbind('click').click(function() {
@@ -259,7 +278,7 @@ function initClickEvents() {
 	$("#overlay-back-sub").unbind('click').click(function() {
 		closeInfo();
 	});
-
+	
 	$("html").unbind('click').click(function(e) {
 		if (!$("#info-cont").is(":hover")) {
 			var infoWidth = $("#info-cont").outerWidth();
@@ -271,21 +290,22 @@ function initClickEvents() {
 			}
 		}
 
-		if(!$(e.target).is('.form-test')) {
-    		$(".form-test").removeClass("form-test-active");
-  		}
+		if (!calHover && !formCalHover && $("#cal-cont").length > 0) {
+			calCancel();
+		}
 	});
 
 }
 
 
-/*----------------- AJAX FUNCTIONS -----------------*/
+
+
+
+
+/*----------------- MISC. FUNCTIONS -----------------*/
 
 function ajax(file, type, data) {
 	/*
-	var userid = getUserId();
-	data.userid = userid;
-	
 	$.ajax({
 		url: "/php/" + file,
 		type: type,
@@ -296,37 +316,13 @@ function ajax(file, type, data) {
 	    		return false;
 	    	},
 	    	success: function(data){
-			return data;
+				return data;
 	    	}
 	});
 	*/
+
+	return true;
 }
-
-function insertExpense(data) {
-	var file = "insert_expense.php";
-	var type = "POST";
-	data = {date: "2/8/18", description: "Description", category: 1, amount: 150.40};
-	var errors = '';
-	
-	//check for errors
-	
-	if (errors) {
-		
-	}
-	else {
-		var submit = ajax(file, type, data);
-		
-		if (submit) {
-			console.log("Success");
-			//refresh page, or re-load expenses
-		}
-	}
-}
-
-
-
-
-/*----------------- MISC. FUNCTIONS -----------------*/
 
 function showForm(type, $link = false, ) {
 	var formWidth = $("#form-cont").outerWidth();
@@ -339,9 +335,7 @@ function showForm(type, $link = false, ) {
 		$("#overlay-back").show();
 		$("#overlay-back").css("opacity", "0.6");
 
-		if (mobileCheck()) {
-			closeInfo();
-		}
+		if (mobileCheck()) { closeInfo(); }
 
 		switch (type) {
 			case "expense-add":
@@ -350,7 +344,7 @@ function showForm(type, $link = false, ) {
 				$form.find($(".form-title")).html("Add Expense");
 				$form.find($(".form-date")).val(currentDate());
 				$form.find($(".form-description")).val("Misc");
-				$form.find($(".form-amount")).val("0.00");
+				$form.find($(".form-number")).val("0.00");
 				$form.find($(".form-category")).val($form.find($(".form-category option:first")).val());
 				break;
 
@@ -386,7 +380,7 @@ function showForm(type, $link = false, ) {
 				$form.find("input:first").focus(); //.select();
 				$form.find($(".form-title")).html("Add Category");
 				$form.find($(".form-name")).val("New Category");
-				$form.find($(".form-budget")).val("");
+				$form.find($(".form-budget")).val("0.00");
 				$form.find($(".form-cat-type")).val(0);
 				$form.find($(".form-button-delete")).hide();
 				break;
@@ -405,6 +399,7 @@ function showForm(type, $link = false, ) {
 				$form = $("#form-transfer");
 				$form.find("select:first").focus(); //.select();
 				$form.find($(".form-title")).html("Transfer Funds");
+				$form.find($(".form-number")).val("0.00");
 				break;
 
 			default:
@@ -413,6 +408,7 @@ function showForm(type, $link = false, ) {
 
 		if ($form) {
 			$form.show();
+			$form.attr("type", type);
 			$form.addClass("form-active");
 		} 
 	}
@@ -420,8 +416,98 @@ function showForm(type, $link = false, ) {
 
 function submitForm() {
 	if (checkFormErrors() == false) {
-		$form = $(".form-active");
-		console.log("Successful Form Submit");
+		var $form = $(".form-active");
+		var formType = $form.attr("type");
+		var complete = function(){};
+		var submit = false;
+		var file, type;
+
+		$form.find($(".form-userid")).val(userid);
+
+		if ($form.find($(".form-date")).length > 0 ) {
+			$form.find($(".form-date")).each(function() {
+				$(this).val(formatDate($(this).val(), "-"));
+			});
+		}
+
+		var data = $form.serialize();
+		console.log(data);
+
+		switch (formType) {
+			case "expense-add":
+				file = "insert_expense.php";
+				type = "POST";
+				data = $form.serialize();
+				complete = function() {
+					console.log("Success Adding Expense");
+					//showNotification("green", "Expenses added successfully");
+				};
+				break;
+
+			case "expense-edit":
+				file = "";
+				type = "POST";
+				data = $form.serialize();
+				complete = function() {
+					console.log("Success Editing Expense");
+				};
+				break;
+
+			case "account-add":
+				file = "";
+				type = "POST";
+				data = $form.serialize();
+				complete = function() {
+					console.log("Success Adding Account");
+				};
+				break;
+
+			case "account-edit":
+				file = "";
+				type = "POST";
+				data = $form.serialize();
+				complete = function() {
+					console.log("Success Editing Account");
+				};
+				break;
+
+			case "category-add":
+				file = "";
+				type = "POST";
+				data = $form.serialize();
+				complete = function() {
+					console.log("Success Adding Category");
+				};
+				break;
+
+			case "category-edit":
+				file = "";
+				type = "POST";
+				data = $form.serialize();
+				complete = function() {
+					console.log("Success Editing Category");
+				};
+				break;
+
+			case "transfer":
+				file = "";
+				type = "POST";
+				data = $form.serialize();
+				complete = function() {
+					console.log("Success Transferring Funds");
+				};
+				break;
+
+			default: 
+				break;
+		}
+
+		submit = ajax(file, type, data);
+		if (submit) { 
+			closeForms();
+
+			complete(); 
+		}
 	}
 }
 
@@ -435,10 +521,11 @@ function checkFormErrors() {
 		if ($(this).prop("disabled") == false) {
 
 			if ($(this).hasClass("form-date")) {
-				if ($(this).val().length == 0  /*|| checkDate($(this).val())*/ ) {
+				if ($(this).val().length == 0  || !formatDate($(this).val()) ) {
 					error.css("height","20px");
 					$(this).addClass("form-error-outline");
 					formErrors = true;
+					console.log(formatDate($(this).val()));
 				}
 				else {
 					error.css("height", "0px");
@@ -471,7 +558,7 @@ function checkFormErrors() {
 
 	});
 
-	if (formErrors) console.log("Form Error(s)");
+	if (formErrors) { console.log("Form Error(s)"); }
 	return formErrors;
 }
 
@@ -517,18 +604,81 @@ function currentDate() {
 	var mm = today.getMonth()+1;
 	var yyyy = today.getFullYear();
 
-	if(dd<10) {
-	    dd = '0'+dd
-	} 
-
-	if(mm<10) {
-	    mm = '0'+mm
-	} 
+	if(dd<10) { dd = '0'+dd; } 
+	if(mm<10) { mm = '0'+mm; } 
 
 	return mm + '/' + dd + '/' + yyyy;
 }
 
 function mobileCheck() {
-	var size = 600;
-	return ($(window).width() <= size);
+	return ($(window).width() <= 600);
+}
+
+function showNotification(type, message) {
+	var $notification = $("body").add($(".notification-cont"));
+
+	setTimeout(function() {
+		closeNotification($notification);
+	}, 2000);
+}
+
+function closeNotification($notification = false) {
+	if ($notification) {
+		var height = $notification.outerHeight();
+		$notification.css("top", -height + "px");
+
+		setTimeout(function() {
+			$notification.remove();
+		}, 500);
+	}
+	else {
+		//Apply to all notifications
+	}
+}
+
+function formatDate(date, format = false) {
+	var day, month, year, split, currentChar;
+	var newDate = false;
+
+	if (date.includes("-")) { 
+		currentChar = "-"; 
+	}
+	else if (date.includes("/")) { 
+		currentChar = "/"; 
+	}
+	else {
+		return false;
+	}
+
+	if (!format) { format = currentChar; }
+
+	split = date.split(currentChar);
+	
+	if (split.length == 3) {
+		if (currentChar == "/") {
+			year = split[2];
+			month = split[0];
+			day = split[1];
+		}
+		else if (currentChar == "-") {
+			year = split[0];
+			month = split[1];
+			day = split[2];
+		}
+		
+		if (year.length <= 2) 	{ year = '20' + year };
+		if (day.length < 2) 	{ day = '0' + day };
+		if (month.length < 2) 	{ month = '0' + month };
+		
+		if (month <= 12 && month >= 1 && day <= new Date(year, month, 0).getDate() && day > 0 && year.length == 4) {	
+			if (format == "-") { 
+				newDate = [year, month, day].join('-'); 
+			}
+			else if (format == "/") {
+				newDate = [month, day, year].join('/');
+			}
+		}
+	}
+
+	return newDate;
 }

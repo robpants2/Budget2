@@ -36,7 +36,7 @@ table {
 
 .cal-button {
 	vertical-align: top;
-	height: 26px;
+	height: 26.5px;
 }
 
 #overlay-back {
@@ -191,7 +191,7 @@ table {
 	color: white;
 	text-align: center;
 	font-size: 25px;
-	line-height: 25px;
+	line-height: 22px;
 	margin: 0px;
 }
 
@@ -228,18 +228,46 @@ table {
 }
 
 #info-nav-control-cont {
-	height: 50px;
-	width: 100%;
+	/*height: 50px;
+	width: 100%;*/
+	background-color: #333;
+	height: 60px;
+	width: calc(100% + 30px);
+	position: relative;
+	top: -15px;
+	left: -15px;
+	box-sizing: border-box;
+	padding: 10px 15px;
 	display: none;
 }
 
 .nav-control-small {
 	display: inline-block;
-	margin-right: 11.7%;
+	/*margin-right: 11.7%;*/
+	margin-right: 10px;
 }
 
 .nav-control-small:last-child {
 	margin-right: 0px;
+}
+
+.info-close {
+	position: absolute;
+    right: 0px;
+    top: 0px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    width: 55px;
+    height: 60px;
+    text-align: center;
+    line-height: 59px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.info-close:hover {
+	background: #545454;
 }
 
 
@@ -370,6 +398,7 @@ table {
     overflow: hidden;
     position: absolute;
     top: 47px;
+    text-shadow: 0px 0px 0.1px #00000070;
 }
 
 .form-error-outline {
@@ -613,6 +642,12 @@ table {
 	right: 0px;
 }
 
+#expenses-heading-add-expense {
+	display: none;
+   	position: absolute;
+    right: 0px;
+}
+
 #expenses-table-head-cont {
 	background-color: gray;
 	box-sizing: border-box;
@@ -771,7 +806,7 @@ table {
 	}
 
 	#info-category-cont {
-		height: calc(70vh - 140px);
+		height: calc(70vh - 160px);
 	}
 
 
@@ -813,6 +848,14 @@ table {
 
 	.exp-col-bal, .exp-col-cat {
 		display: none;
+	}
+
+	#expenses-heading-type {
+		display: none;
+	}
+
+	#expenses-heading-add-expense {
+		display: inline-block;
 	}
 
 }
