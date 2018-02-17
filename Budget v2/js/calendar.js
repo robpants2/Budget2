@@ -33,6 +33,7 @@ function showCal(link) {
 	linkObj = link;
 	
 	if (formatDate(link.val(), "/")) {
+		link.val(formatDate(link.val(), "/"));
 		currentYear = strToDate(link.val()).getFullYear();
 		currentMonth = strToDate(link.val()).getMonth();
 		selectedDate = strToDate(link.val());
@@ -47,15 +48,13 @@ function showCal(link) {
 	initCal();
 	setDaysInMonth(currentMonth, currentYear);
 	
-	var msg = '<div id="cal-cont" style="top: ' + ((linkObj.offset().top + linkObj.outerHeight())) + 'px; left: ' + (linkObj.offset().left - 1) + 'px;">';
+	var msg = '<div id="cal-cont" style="width: ' + (linkObj.parent().outerWidth()) + 'px; top: ' + ((linkObj.offset().top + linkObj.outerHeight())) + 'px; left: ' + (linkObj.offset().left - 1) + 'px;">';
 	
 	msg += '<div style="line-height: 33px">';
 	msg += '<table class="cal-head-table"><tr>';
 	msg += '<td style="text-align: left;"><div id="cal-prev-month" class="cal-arrow" onclick="showPrevMonth()"><</div></td>';
-	//msg += '<td><select id="cal-current-month"></select>';
-	//msg += '<td><select id="cal-current-year"></select>';
-	msg += '<td><span id="cal-current-month" style="font-weight: bold;">' + monthNames[new Date(currentYear, currentMonth, 1).getMonth()] + '</span></td>';
-	msg += '<td><span id="cal-current-year" style="font-weight: bold;">' + currentYear + '</span></td>';
+	msg += '<td style="width: 100px;"><span id="cal-current-month" style="font-weight: bold;">' + monthNames[new Date(currentYear, currentMonth, 1).getMonth()] + '</span></td>';
+	msg += '<td style="width: 65px;"><span id="cal-current-year" style="font-weight: bold;">' + currentYear + '</span></td>';
 	msg += '<td style="text-align: right;"><div id="cal-next-month" class="cal-arrow" onclick="showNextMonth()">></div></td>';
 	msg += '</tr></table>';
 	msg += '</div>';
@@ -256,8 +255,17 @@ function calCancel() {
 }
 
 function calSubmit() {
-	var date = (selectedDate.getMonth() + 1) + '/' + selectedDate.getDate() + '/' + selectedDate.getFullYear();
+	var month = (selectedDate.getMonth() + 1).toString();
+	var year = selectedDate.getFullYear().toString().substring(2,4);
+	var day = selectedDate.getDate().toString();
+
+	if (month.length == 1) { month = "0" + month; }
+	if (day.length == 1) { day = "0" + day; }
+
+	var date = month + '/' + day + '/' + year;
 	linkObj.val(formatDate(date, "/"));
+	linkObj.attr("value", month + "" + day + "" + year);
+
 	checkFormErrors();
 	calCancel();
 }
@@ -273,6 +281,10 @@ function strToDate(dateStr) {
 			year = split[2];
 			month = split[0];
 			day = split[1];	
+
+			if (year.length == 2) {
+				year = "20" + year;
+			}
 			
 			return new Date(year, month - 1, day);
 		}
