@@ -25,6 +25,7 @@ $(document).ready(function() {
 
 	$("#overlay-back").hide();
 	$("#overlay-back-sub").hide();
+	$("#form-total-spending").hide();
 	$(".form-new-cat-cont").find("input").addClass("disabled");
 
 	//Will need to update based on query string
@@ -63,6 +64,15 @@ function initClickEvents() {
 	$(".info-close").unbind('click').click(function() {
 		closeInfo();
 	});	
+
+	$("#info-search-submit").unbind('click').click(function() {
+		if ($("#info-search").val().length > 0) {
+			searchExpenses($("#info-search").val());
+		}
+		else {
+			showNotification("red", "You must enter text before searching.");
+		}
+	});
 	
 
 
@@ -83,18 +93,18 @@ function initClickEvents() {
 		showForm("transfer");
 	});
 
+	$(".control-spending").unbind('click').click(function() {
+		showTotalSpending();
+	});
+
 
 
 	/*-- Accounts --*/
 	$(".account").unbind('click').click(function() {
-		$(".account").removeClass("account-active");
+		deselectAll();
 		$(this).addClass("account-active");
-		$(".account-balance").css("right", "-27px");
 		$(this).find($(".account-balance")).css("right", "0px");
-
-		$(".category").removeClass("category-active");
-		$(".category-budget").css("right", "-27px");
-		$(".category").css("height", "25px");
+		$("#expenses-heading-name").html($(this).find($(".account-name")).html());
 
 		loadAccountExpenses($(this).attr("accountid"));
 	});
@@ -108,15 +118,10 @@ function initClickEvents() {
 
 	/*-- Categories --*/
 	$(".category").unbind('click').click(function() {
-		$(".category").removeClass("category-active");
+		deselectAll();
 		$(this).addClass("category-active");
-		$(".category-budget").css("right", "-27px");
 		$(this).find($(".category-budget")).css("right", "0px");
-		$(".category").css("height", "25px");
 		$(this).css("height", "70px");
-
-		$(".account").removeClass("account-active");
-		$(".account-balance").css("right", "-27px");
 
 		loadCategoryExpenses($(this).attr("categoryid"));
 	});
@@ -138,6 +143,8 @@ function initClickEvents() {
 
 	$(".exp-delete-checkbox-all").unbind('click').click(function() {
 		if ($(this).is(":checked")) {
+			showDeleteButtons();
+
 			$(".expense").each(function() {
 				$(this).addClass("expense-selected");
 				$(this).find($(".exp-delete-checkbox")).prop("checked", true);
@@ -146,6 +153,7 @@ function initClickEvents() {
 		else {
 			$(".expense").removeClass("expense-selected");
 			$(".exp-delete-checkbox").prop("checked", false);
+			hideDeleteButtons();
 		}
 	});
 
@@ -154,9 +162,15 @@ function initClickEvents() {
 
 		if ($(this).prop("checked")) {
 			$expense.addClass("expense-selected");
+			showDeleteButtons();
 		}
 		else {
 			$expense.removeClass("expense-selected");
+
+			if ($(".expense-selected").length == 0) {
+				$(".exp-delete-checkbox-all").prop("checked", false);
+				hideDeleteButtons();
+			}
 		}
 	});
 
@@ -164,6 +178,16 @@ function initClickEvents() {
 		$checkbox = $(this).find("input[type=checkbox]");
 
 		if (!$checkbox.is(":hover")) $checkbox.trigger('click');
+	});
+
+	$("#expenses-delete-submit").unbind('click').click(function() {
+		//ajax deleteExpenses
+	});
+
+	$("#expenses-delete-cancel").unbind('click').click(function() {
+		$("input[type=checkbox]").prop("checked", false);
+		$(".expense").removeClass("expense-selected");
+		hideDeleteButtons();
 	});
 
 
@@ -205,28 +229,52 @@ function initClickEvents() {
 		}
 	});
 
+	$(".form-button-delete").unbind('click').click(function() {
+		var $box = $(this).next();
+
+		if ($box.height() <= 0) {
+			$box.css("height", "123px");
+		}
+	});
+
+	$(".form-delete-cancel").unbind('click').click(function() {
+		var $box = $(this).closest($(".form-delete-box"));
+
+		if ($box.height() > 0) {
+			$box.css("height", "0px");
+		}
+	});
+
 	$(".form input").change(function() {
 		checkFormErrors();
 	});
 
 	$(".form-input-reset").unbind('click').click(function() {
-		var $input = $(this).parent().find($(".form-input"));
-
-		if ($input.hasClass("form-number")) {
-			$input.val("0.00");
-			$input.attr("value", "");
-		}
-		else if ($input.hasClass("form-date")) {
-			$input.val("__/__/__");
-			$input.attr("value", "");
-			//$input.val("");
+		if ($(this).hasClass("form-input-reset-search")) {
+			if ($("#info-search").val().length > 0) {
+				$("#info-search").val("");
+				cancelSearchExpenses();
+			}
 		}
 		else {
-			$input.val("");
+			var $input = $(this).parent().find($(".form-input"));
+
+			if ($input.hasClass("form-number")) {
+				$input.val("0.00");
+				$input.attr("value", "");
+			}
+			else if ($input.hasClass("form-date")) {
+				$input.val("__/__/__");
+				$input.attr("value", "");
+				//$input.val("");
+			}
+			else {
+				$input.val("");
+			}
+			
+			$input.focus();
+			checkFormErrors();
 		}
-		
-		$input.focus();
-		checkFormErrors();
 	});
 
 	$(".form-close").unbind('click').click(function() {
@@ -401,6 +449,10 @@ function initKeyPressEvents() {
 		$input.val(valString);
 		$input.attr("value", value);
 		checkFormErrors();
+	});
+
+	$(".total-spending-close").unbind('click').click(function() {
+		hideTotalSpending();
 	});
 
 	$("html").keydown(function(e) {
@@ -754,6 +806,7 @@ function checkFormErrors() {
 function closeForms() {
 	var duration = 0.5;
 
+	hideTotalSpending();
 	$("#form-cont").css("right", -300);
 	$("#overlay-back").css("opacity", "0");
 
@@ -766,6 +819,7 @@ function closeForms() {
 		$(".form-new-cat-box").css("height", "0px");
 		$(".form-new-cat-box").css("margin-top", "0px");
 		$(".form-button-new-cat").val("Create New Category");
+		$(".form-delete-box").css("height", "0px");
 
 		$("#overlay-back").hide();
 		$(".form").hide();
@@ -911,8 +965,60 @@ function randomNum(length) {
 	return num;
 }
 
+function searchExpenses(searchText) {
+	deselectAll();
 
+	closeInfo();
+	//ajax search expenses
+}
 
+function cancelSearchExpenses() {
+	$(".account:first").trigger('click');
+
+	/*
+	setTimeout(function() {
+		closeInfo();
+	}, 100);
+	*/
+}
+
+function deselectAll() {
+	$(".account").removeClass("account-active");
+	$(".account-balance").css("right", "-27px");
+
+	$(".category").removeClass("category-active");
+	$(".category-budget").css("right", "-27px");
+	$(".category").css("height", "25px");
+
+	$(".expense").removeClass("expense-selected");
+	$("input[type=checkbox]").prop("checked", false);
+}
+
+function showDeleteButtons() {
+	$("#expenses-heading-delete-box").css("width", "95px");
+}
+
+function hideDeleteButtons() {
+	$("#expenses-heading-delete-box").css("width", "0px");
+}
+
+function showTotalSpending() {
+	$("#form-total-spending").show();
+	$("#form-total-spending").css("top", "15px");
+	$("#overlay-back").show();
+	$("#overlay-back").css("opacity", "0.6");
+	closeInfo();
+}
+
+function hideTotalSpending() {
+	$("#form-total-spending").css("top", "-200px");
+	$("#overlay-back").css("opacity", "0");
+
+	setTimeout(function() {
+		$("#form-total-spending").hide();
+		$("#overlay-back").hide();
+	}, 500);
+}
 
 
 

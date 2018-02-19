@@ -21,7 +21,7 @@
 		<div id="nav-cont">
 			<div id="nav-control-cont">
 				<div id="nav-control-add-expense" class="control-add-expense nav-control">Add</div>
-				<div id="nav-control-spending" class="nav-control">Spend</div>
+				<div id="nav-control-spending" class="control-spending nav-control">Spend</div>
 				<div id="nav-control-transfer" class="control-transfer nav-control">Transf</div>
 				<div id="nav-control-recurring" class="nav-control">Recur</div>
 			
@@ -37,7 +37,7 @@
 					<div id="info-control-add-expense" class="control-add-expense nav-control">Add</div>
 				</div>
 				<div class="nav-control-small">
-					<div id="info-control-spending" class="nav-control">Spend</div>
+					<div id="info-control-spending" class="control-spending nav-control">Spend</div>
 				</div>
 				<div class="nav-control-small">
 					<div id="info-control-transfer" class="control-transfer nav-control">Transf</div>
@@ -49,6 +49,7 @@
 			</div>
 			<div id="info-search-cont">
 				<input id="info-search" type="text" name="info-search" placeholder="Search Expenses">
+				<div class="form-input-reset form-input-reset-search">x</div>
 				<input id="info-search-submit" type="button" value="Search">
 			</div>
 			
@@ -173,6 +174,12 @@
 					<div id="expenses-heading-name">Checking</div>
 					<div id="expenses-heading-type">Account</div>
 					<div id="expenses-heading-add-expense" class="control-add-expense nav-control">Add</div>
+					<div id="expenses-heading-delete-box">
+						<div id="expenses-heading-delete-cont">
+							<div id="expenses-delete-submit" class="expenses-delete-button">Del</div>
+							<div id="expenses-delete-cancel" class="expenses-delete-button">Cancl</div>
+						</div>
+					</div>
 				</div>
 				<div id="expenses-table-head-cont">
 					<div id="expenses-table-head">
@@ -283,12 +290,12 @@
 					<div class="form-input-reset">x</div>
 					<div class="form-error form-error-date">Please enter a valid name</div>
 				</div>
-				<input class="form-button-delete form-input" type="button" value="Delete Account">
+				<input class="form-button-delete button" type="button" value="Delete Account">
 				<div class="form-delete-box">
 					<div class="form-delete-cont">
-						<div>Are you sure you want to delete this account?</div>
-						<input class="form-button-cancel form-delete-cancel" value="Cancel">
-						<input class="form-button-submit form-delete-submit" value="Delete">
+						<div style="margin-bottom: 15px;">Are you sure you want to delete this account?</div>
+						<input class="form-delete-cancel button" type="button" value="Cancel">
+						<input class="form-delete-submit button" type="button" value="Delete">
 					</div>
 				</div>
 				<div class="form-buttons">
@@ -319,7 +326,14 @@
 						<option value="1">Deposit</option>
 					</select>
 				</div>
-				<input class="form-button-delete form-input" type="button" value="Delete Category">
+				<input class="form-button-delete button" type="button" value="Delete Category">
+				<div class="form-delete-box">
+					<div class="form-delete-cont">
+						<div style="margin-bottom: 15px;">Are you sure you want to delete this category?</div>
+						<input class="form-delete-cancel button" type="button" value="Cancel">
+						<input class="form-delete-submit button" type="button" value="Delete">
+					</div>
+				</div>
 				<div class="form-buttons">
 					<input class="form-button-cancel button" type="button" value="Cancel">
 					<input class="form-button-submit button" type="button" value="Submit">
@@ -356,6 +370,16 @@
 
 
 		</div>
+
+		<div id="form-total-spending">
+			<div class="total-spending-close form-close">x</div>
+			<div class="total-spending-heading form-title">
+				<div class="total-spending-title">Total Spending</div>
+			</div>
+			<div class="total-spending-table">
+
+			</div>
+		</div>	
 		
 		<div id="overlay-back"></div>
 		<div id="overlay-back-sub"></div>
