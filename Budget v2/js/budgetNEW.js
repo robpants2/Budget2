@@ -9,6 +9,8 @@ var userid = "1234567890";
 var formCalHover = false;
 var calHover = false;
 var shiftDown = false;
+var formRecurringValue1 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28];
+var formRecurringValue2 = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th"];
 
 var homepage = "/indexNEW.php";
 
@@ -22,6 +24,7 @@ $(document).ready(function() {
 	initData();
 	initClickEvents();
 	initKeyPressEvents();
+	initForms();	
 
 	$("#overlay-back").hide();
 	$("#overlay-back-sub").hide();
@@ -95,6 +98,10 @@ function initClickEvents() {
 
 	$(".control-spending").unbind('click').click(function() {
 		showTotalSpending();
+	});
+
+	$(".control-recurring").unbind('click').click(function() {
+		showForm("recurring-add");
 	});
 
 
@@ -212,19 +219,19 @@ function initClickEvents() {
 			$box.find("input:first").select();
 			$box.find("input").removeClass("disabled");
 			$box.find(".form-input").prop("tabindex", "0");
-			$box.closest($(".form")).find($(".form-category")).prop("tabindex", "-1");
-			$box.closest($(".form")).find($(".form-category")).addClass("disabled");
+			$box.closest($(".form")).find($(".form-category-select")).prop("tabindex", "-1");
+			$box.closest($(".form")).find($(".form-category-select")).addClass("disabled");
 			$box.find($(".form-new-cat-create")).val("true");
 		}
 		else { //-> Close
 			$box.css("height", "0px");
 			$box.css("margin-top", "0px");
 			$(this).val("Create New Category");
-			$box.closest($(".form")).find($(".form-category")).focus();
+			$box.closest($(".form")).find($(".form-category-select")).focus();
 			$box.find("input").addClass("disabled");
 			$box.find(".form-input").prop("tabindex", "-1");
-			$box.closest($(".form")).find($(".form-category")).prop("tabindex", 0);
-			$box.closest($(".form")).find($(".form-category")).removeClass("disabled");
+			$box.closest($(".form")).find($(".form-category-select")).prop("tabindex", 0);
+			$box.closest($(".form")).find($(".form-category-select")).removeClass("disabled");
 			$box.find($(".form-new-cat-create")).val("false");
 		}
 	});
@@ -281,7 +288,21 @@ function initClickEvents() {
 		closeForms();
 	});
 
-	
+	$(".recurring-frequency").change(function() {
+		var option = $(this).find("option[value=" + $(this).val() + "]");	
+
+		if (parseInt(option.attr("subtextlength")) > 0) {
+			$(".recurring-frequency-2").show();
+
+		}
+		else {
+			$(".recurring-frequency-2").hide();
+		}
+	});
+
+	$(".total-spending-close").unbind('click').click(function() {
+		hideTotalSpending();
+	});
 
 
 	$(".form-cal").unbind('click').click(function() {
@@ -295,7 +316,6 @@ function initClickEvents() {
 	
 	$(".form-cal").hover(function() { formCalHover = true; }, function() { formCalHover = false; });
 	$("#cal-cont").hover(function() { calHover = true; }, function() { calHover = false; });
-
 
 	$("#overlay-back").unbind('click').click(function() {
 		closeForms();
@@ -451,10 +471,6 @@ function initKeyPressEvents() {
 		checkFormErrors();
 	});
 
-	$(".total-spending-close").unbind('click').click(function() {
-		hideTotalSpending();
-	});
-
 	$("html").keydown(function(e) {
 		if (e.keyCode == 40) {
 			showNotification("green", "Test Notification");
@@ -470,6 +486,31 @@ function initKeyPressEvents() {
 			shiftDown = false;
 		}
 	});
+}
+
+function initForms() {
+	var msg;
+	$(".form-number").val("0.00");
+	$(".form-number").attr("value", "");
+	$(".form-date").val(currentDate());
+	$(".form-date").attr("value", currentDate().split("/").join(""));
+	$(".recurring-frequency-2").hide();
+
+	//Load accounts into account selectors
+	msg = "";
+	$(".form-account-select").empty();
+	$(".account").each(function() {
+		msg += '<option value="' + $(this).attr("accountid") + '">' + $(this).find($(".account-name")).html() + '</option>';
+	});
+	$(".form-account-select").append(msg);
+
+	//Load categories into category selectors
+	msg = "";
+	$(".form-category-select").empty();
+	$(".category").each(function() {
+		msg += '<option value="' + $(this).attr("categoryid") + '">' + $(this).find($(".category-name")).html() + '</option>';
+	});
+	$(".form-category-select").append(msg);
 }
 
 
@@ -572,7 +613,7 @@ function showForm(type, $link = false, ) {
 				$form.find($(".form-date")).attr("value", currentDate().split("/").join(""));
 				$form.find($(".form-description")).val("Misc");
 				$form.find($(".form-number")).val("0.00");
-				$form.find($(".form-category")).val($form.find($(".form-category option:first")).val());
+				$form.find($(".form-category-select")).val($form.find($(".form-category-select option:first")).val());
 				break;
 
 			case "expense-edit":
@@ -584,7 +625,7 @@ function showForm(type, $link = false, ) {
 				$form.find($(".form-amount")).val($link.find($(".exp-col-amount")).html().replace('$',''));
 				$form.find($(".form-amount")).attr("value", $link.find($(".exp-col-amount")).html().replace('.', '').replace('$', ''));
 				$form.find($(".form-cat-budget")).val("0.00");
-				$form.find($(".form-category")).val($link.find($(".exp-col-cat")).attr("categoryid"));
+				$form.find($(".form-category-select")).val($link.find($(".exp-col-cat")).attr("categoryid"));
 				break;
 
 			case "account-add":
@@ -622,6 +663,12 @@ function showForm(type, $link = false, ) {
 			case "transfer":
 				$form = $("#form-transfer");
 				$form.find($(".form-title")).html("Transfer Funds");
+				$form.find($(".form-number")).val("0.00");
+				break;
+
+			case "recurring-add":
+				$form = $("#form-recurring-expense");
+				$form.find($(".form-title")).html("Add Recurring Expense");
 				$form.find($(".form-number")).val("0.00");
 				break;
 

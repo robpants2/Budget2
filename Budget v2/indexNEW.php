@@ -20,10 +20,12 @@
 	<body>
 		<div id="nav-cont">
 			<div id="nav-control-cont">
-				<div id="nav-control-add-expense" class="control-add-expense nav-control">Add</div>
+				<div id="nav-control-add-expense" class="control-add-expense nav-control">Add
+					<img src="./img/plus.png">
+				</div>
 				<div id="nav-control-spending" class="control-spending nav-control">Spend</div>
 				<div id="nav-control-transfer" class="control-transfer nav-control">Transf</div>
-				<div id="nav-control-recurring" class="nav-control">Recur</div>
+				<div id="nav-control-recurring" class="control-recurring nav-control">Recur</div>
 			
 			</div>
 			<div id="nav-expand-cont" class="nav-expander">
@@ -43,7 +45,7 @@
 					<div id="info-control-transfer" class="control-transfer nav-control">Transf</div>
 				</div>
 				<div class="nav-control-small">
-					<div id="info-control-recurring" class="nav-control">Recur</div>
+					<div id="info-control-recurring" class="control-recurring nav-control">Recur</div>
 				</div>
 				<div class="info-close">x</div>
 			</div>
@@ -68,7 +70,7 @@
 				<div class="info-item-table">
 
 					<div class="account" accountid="1">
-						<div class="account-name">Account Name asdfasdf as df asdf asdf asd fa sdfa sdfa sdf asd f</div>
+						<div class="account-name">Account Name asdfasdf</div>
 						<div class="account-balance">
 							<div class="account-balance-value">$150.50</div>
 							<div class="account-edit">E</div>
@@ -243,7 +245,7 @@
 				</div>
 				<div class="form-item">
 					<div class="form-heading">Category</div>
-					<select name="category" class="form-input form-category form-select">
+					<select name="category" class="form-input form-category-select form-select">
 						<option value="1">Misc</option>
 						<option value="2">Groceries</option>
 						<option value="3">Rent</option>
@@ -368,8 +370,76 @@
 				</div>
 			</div>
 
+			<div id="form-recurring-expense" class="form">
+				<div class="form-title">Recurring Expense</div>
+				<div class="form-item">
+					<div class="form-heading">Description</div>
+					<input name="description" class="form-input form-description form-text" type="text" value="Description" placeholder="ex. Misc">
+					<div class="form-input-reset">x</div>
+					<div class="form-error form-error-date">Please enter a valid description</div>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Amount</div>
+					<input class="form-input form-amount form-number" type="text" value="">
+					<div class="form-input-reset">x</div>
+					<div class="form-error form-error-date">Please enter a valid amount</div>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Account</div>
+					<select class="form-input form-account-select">
+						<option value="0">Account 1</option>
+						<option value="1">Account 2</option>
+					</select>
+				</div>
+				<div class="form-item">
+					<div class="form-heading">Frequency</div>
+					<select class="form-input recurring-frequency">
+						<option value="daily" subtext1="day(s)" subtextlength="0">Daily</option>
+						<option value="weekly" subtext1="week(s)" subtextlength="7">Weekly</option>
+						<option value="monthly" subtext="month(s)" subtextlength="28">Monthly</option>
+					</select>
+				</div>
+				<div class="form-item" style="margin-top: -10px;">
+					<div style="margin-bottom: 5px;" class="recurring-frequency-1">
+						<span>Every</span>
+						<select class="form-input form-recurring-select form-recurring-value1" style="width: auto; padding-right: 0px;">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+						</select>
+						<span class="form-recurring-frequency">month(s)</span>
+					</div>
+					<div class="recurring-frequency-2">
+						<span>On the</span>
+						<select class="form-input form-recurring-select form-recurring-value2" style="width: auto; padding-right: 0px">
+							<option value="1">1st</option>
+							<option value="2">2nd</option>
+							<option value="3">3rd</option>
+							<option value="4">4th</option>
+						</select>
+						<span class="form-recurring-frequency2">day</span>
+					</div>
+				</div>
 
-		</div>
+				<input class="form-button-delete button" type="button" value="Delete Recurring Expense">
+				<div class="form-delete-box">
+					<div class="form-delete-cont">
+						<div style="margin-bottom: 15px;">Are you sure you want to delete this recurring expense?</div>
+						<input class="form-delete-cancel button" type="button" value="Cancel">
+						<input class="form-delete-submit button" type="button" value="Delete">
+					</div>
+				</div>
+				<div class="form-buttons">
+					<input class="form-button-cancel button" type="button" value="Cancel">
+					<input class="form-button-submit button" type="button" value="Submit">
+				</div>
+			</div>	
+
+		</div> <!-- End Forms -->
+
+
+
 
 		<div id="form-total-spending">
 			<div class="total-spending-close form-close">x</div>

@@ -143,6 +143,7 @@ input::placeholder {
 	color: white;
 	user-select: none;
 	cursor: pointer;
+	background-image: url("../img/plus.png");
 }	
 
 #nav-expand-cont {
@@ -534,6 +535,7 @@ input::placeholder {
 .form-delete-cont {
 	padding: 15px;
 	border: 1px solid gray;
+	background-color: #ffb2b2;
 }
 
 .form-delete-cancel {
@@ -947,7 +949,15 @@ input::placeholder {
 
 
 /*-- Media Queries ------------------------------------------------------------------*/
+.mobile {
+	display: none;
+}
+
 @media screen and (max-width: 600px) {
+	.mobile {
+		display: inline-block;
+	}
+
 	#nav-cont {
 		display: none;
 	}
